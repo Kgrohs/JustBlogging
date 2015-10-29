@@ -104,5 +104,6 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="Blog.sql" />
+    <Build Include="Log.sql" />
   </ItemGroup>
 </Project>
