@@ -1,0 +1,11 @@
+﻿@model List<JustBlogging.Models.Blog>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>My JustBlogging Blogger</h2>
+@foreach (var blog in Model)
+{
+    <div class="comment">@blog.Comment</div>
+}
+
