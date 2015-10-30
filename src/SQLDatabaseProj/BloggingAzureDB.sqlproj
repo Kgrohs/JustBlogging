@@ -103,7 +103,11 @@
     <None Include="LocalDB.publish.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Blog.sql" />
     <Build Include="Log.sql" />
+    <Build Include="User.sql" />
+    <Build Include="Entry.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="BloggingAzureDB.refactorlog" />
   </ItemGroup>
 </Project>

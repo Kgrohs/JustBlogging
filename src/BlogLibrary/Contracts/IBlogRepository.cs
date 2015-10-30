@@ -13,6 +13,12 @@ namespace BlogLibrary.Contracts
         IDbConnectionFactory DbFactory { get; set; }
 
         IEnumerable<string> GetAllComments();
-        IEnumerable<Blog> GetAllBlogs();
+        IEnumerable<Entry> GetAllBlogs();
+        IEnumerable<Entry> GetAllBlogs(int userId);
+        bool IsCurrentUser(string userName, int userId);
+        bool AddEntry(int userId, string entry, DateTime date);
+        int GetUserId(string userName);
+        bool CreateUser(string userName);
+        string GetUserName(int userId);
     }
 }

@@ -1,13 +1,23 @@
-﻿@model IEnumerable<BlogLibrary.Models.Blog>
-@{
-    ViewBag.Title = "Index";
-}
+﻿@model JustBlogging.Models.BlogViewModel
 
+<h2>Welcome to @Model.BlogOwner's Blog!</h2>
+<hr/>
 
-
-<h2>My JustBlogging Blogger</h2>
-@foreach (var blog in Model)
+@if (Request.IsAuthenticated && Model.LetMeEdit)
 {
-    <div class="comment">@blog.Date <br/> @blog.Comment</div>
+    using (Html.BeginForm("Index", "Blog", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <textarea type="text" cols="100" placeholder="Start blogging" name="entry"></textarea>
+        <textarea style="display:none" type="text" name="userName">@User.Identity.Name</textarea>
+        <input type="submit" value="Blog it" class="btn btn-default" />
+    }
 }
 
+@foreach (var blog in Model.Blogs)
+{
+    <dl class="dl-horizontal">
+        <dt>@blog.Date </dt>
+        <dd>@blog.EntryText</dd>
+    </dl>
+}

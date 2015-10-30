@@ -1,6 +1,0 @@
-﻿CREATE TABLE [dbo].[Blog]
-(
-	[Id]  INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
-	[Comment] TEXT, 
-    [Date] DATETIME NOT NULL
-)

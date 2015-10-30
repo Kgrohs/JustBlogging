@@ -5,16 +5,27 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using BlogService;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using JustBlogging.Models;
+using ServiceStack.Logging;
 
 namespace JustBlogging.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private readonly ILog _log = LogManager.GetLogger("BlogController");
+
+        private IBlogManager _blogManager;
+        public IBlogManager BlogManager
+        {
+            get { return _blogManager ?? (_blogManager = BlogManagerFactory.CreateManager()); }
+            set { _blogManager = value; }
+        }
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -79,7 +90,8 @@ namespace JustBlogging.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    var userId = BlogManager.GetUserId(model.Email);
+                    return RedirectToAction("Index", "Blog", new{ userId });
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -162,8 +174,9 @@ namespace JustBlogging.Controllers
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    return RedirectToAction("Index", "Home");
+                    BlogManager.CreateUser(model.Email);
+                    var userId = BlogManager.GetUserId(model.Email);
+                    return RedirectToAction("Index", "Blog", new{ userId });
                 }
                 AddErrors(result);
             }
